@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record AuctionDTO(
-        Pig auctionePig,
+        Pig auctionedPig,
         BigDecimal highestBid,
         BigDecimal startingPrice,
-        LocalDate expiratioDate,
+        LocalDate expirationDate,
         Boolean isFinished
 ) {
 }

@@ -1,31 +1,51 @@
 package com.pig_auction_service.domain.entities;
 
+import com.pig_auction_service.domain.Breed;
+import lombok.NonNull;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 public class Auction {
 
-    private final Pig auctionePig;
+    @NonNull
+    private final Pig auctionedPig;
+
+    @NonNull
     private final BigDecimal startingPrice;
-    private final LocalDate expiratioDate;
+
+    @NonNull
+    private final LocalDate expirationDate;
+
+
+    @NonNull
     private BigDecimal highestBid;
+
     private Boolean isFinished;
 
-    public Auction(Pig auctionePig, BigDecimal startingPrice, LocalDate expiratioDate) {
-        this.auctionePig = auctionePig;
+    public Auction(Pig auctionedPig, BigDecimal startingPrice, LocalDate expirationDate) {
+        if (startingPrice.compareTo(BigDecimal.ZERO) <= 0 ) {
+            throw new IllegalArgumentException("Starting price needs to be greater than zero.");
+        }
+
+        if (expirationDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Expiration date must be in the future..");
+        }
+
+        this.auctionedPig = auctionedPig;
         this.startingPrice = startingPrice;
         this.highestBid = startingPrice;
-        this.expiratioDate = expiratioDate;
+        this.expirationDate = expirationDate;
         this.isFinished = false;
     }
+
 
     public Boolean getFinished() {
         return isFinished;
     }
 
-    public LocalDate getExpiratioDate() {
-        return expiratioDate;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
     public BigDecimal getStartingPrice() {
@@ -36,7 +56,7 @@ public class Auction {
         return highestBid;
     }
 
-    public Pig getAuctionePig() {
-        return auctionePig;
+    public Pig getAuctionedPig() {
+        return auctionedPig;
     }
 }

@@ -1,23 +1,43 @@
 package com.pig_auction_service.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pig_auction_service.domain.Breed;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Pig {
 
-    Double weight;
-    Integer age;
-    Breed breed;
+    private String name;
 
-    Long auctionID;
+    @JsonIgnore
+    private Auction auction;
 
-    public Pig(Double weight, Integer age, Breed breed, Long auctionID) {
+    private Double weight;
+    private Integer age;
+    private Breed breed;
+
+
+    public Pig() { }
+
+    public Pig(String name, Double weight, Integer age, Breed breed, Auction auction) {
+
+        if (age <= 0 || weight <= 0) {
+            throw new IllegalArgumentException("Atributes must be greater than zero.");
+        }
+
+        this.name = name;
         this.weight = weight;
         this.age = age;
         this.breed = breed;
-        this.auctionID = auctionID;
+        this.auction = auction;
+    }
+
+
+
+
+    public String getName() {
+        return name;
     }
 
     public Double getWeight() {
@@ -32,7 +52,7 @@ public class Pig {
         return breed;
     }
 
-    public Long getAuctionID() {
-        return auctionID;
+    public Auction getAuction() {
+        return auction;
     }
 }

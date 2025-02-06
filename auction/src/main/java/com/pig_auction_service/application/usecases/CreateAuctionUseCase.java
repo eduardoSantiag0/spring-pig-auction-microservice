@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CreateAuctionUseCase {
-    public Auction createAuctionUseCase (AuctionDTO dto) {
-        return new Auction(dto.auctionePig(), dto.startingPrice(), dto.expiratioDate());
+    public Auction execute (AuctionDTO dto) {
+        return new Auction(dto.auctionedPig(), dto.startingPrice(), dto.expirationDate());
     }
 }

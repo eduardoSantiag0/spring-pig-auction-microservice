@@ -1,14 +1,19 @@
 package com.pig_auction_service.infra.gateways;
 
+import com.pig_auction_service.domain.entities.Auction;
 import com.pig_auction_service.domain.entities.Pig;
+import com.pig_auction_service.infra.persistance.AuctionEntity;
 import com.pig_auction_service.infra.persistance.PigEntity;
 
+
 public class PigMapper {
-    public static Pig toDomain(PigEntity entity) {
-        return new Pig(entity.getWeight(), entity.getAge(), entity.getBreed(), entity.getAuctionID());
+
+    public Pig toDomain(PigEntity entity, Auction auction) {
+        return new Pig(entity.getName(), entity.getWeight(), entity.getAge(), entity.getBreed(), auction);
     }
 
-    public static PigEntity toEntity(Pig domain) {
-        return new PigEntity(domain.getWeight(), domain.getAge(), domain.getBreed(), domain.getAuctionID());
+    public PigEntity toEntity(Pig domain, AuctionEntity auctionEntity) {
+        return new PigEntity(domain.getName(), domain.getWeight(), domain.getAge(), domain.getBreed(), auctionEntity);
     }
+
 }

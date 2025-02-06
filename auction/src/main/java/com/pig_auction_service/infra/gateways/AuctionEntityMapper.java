@@ -7,15 +7,26 @@ import com.pig_auction_service.infra.persistance.PigEntity;
 
 public class AuctionEntityMapper {
 
+    private final PigMapper pigMapper;
+
+    public AuctionEntityMapper(PigMapper pigMapper) {
+        this.pigMapper = pigMapper;
+    }
 
     public AuctionEntity toEntity (Auction auction) {
-        PigEntity pigEntity = PigMapper.toEntity(auction.getAuctionePig());
-        return new AuctionEntity (pigEntity, auction.getHighestBid(), auction.getStartingPrice(),
-                auction.getExpiratioDate());
+        PigEntity pigEntity = pigMapper.toEntity(auction.getAuctionedPig(),null );
+
+        AuctionEntity newAuction = new AuctionEntity (pigEntity, auction.getHighestBid(), auction.getStartingPrice(),
+                auction.getExpirationDate());
+
+        pigEntity.setAuctionID(newAuction);
+
+        return newAuction;
     }
 
     public Auction toDomain (AuctionEntity auctionEntity) {
-        Pig pigDomain = PigMapper.toDomain(auctionEntity.getAuctionePig());
-        return new Auction( pigDomain, auctionEntity.getHighestBid(), auctionEntity.getExpiratioDate());
+        Pig pigDomain = pigMapper.toDomain(auctionEntity.getAuctionePig(), null);
+
+        return new Auction( pigDomain, auctionEntity.getHighestBid(), auctionEntity.getExpirationDate());
     }
 }

@@ -4,6 +4,7 @@ import com.pig_auction_service.application.gateways.RepositoryAuctionInterface;
 import com.pig_auction_service.application.usecases.GetLiveAuctionUseCase;
 import com.pig_auction_service.infra.gateways.AuctionEntityMapper;
 import com.pig_auction_service.infra.gateways.AuctionRepositoryJpa;
+import com.pig_auction_service.infra.gateways.PigMapper;
 import com.pig_auction_service.infra.persistance.AuctionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,15 @@ public class AuctionConfig {
     }
 
     @Bean
-    AuctionEntityMapper createAuctionEntityMapper () {
-        return new AuctionEntityMapper();
+    AuctionEntityMapper createAuctionEntityMapper (PigMapper pigMapper) {
+        return new AuctionEntityMapper(pigMapper);
     }
+
+
+    @Bean
+    PigMapper createPigEntityMapper () {
+        return new PigMapper();
+    }
+
 
 }
