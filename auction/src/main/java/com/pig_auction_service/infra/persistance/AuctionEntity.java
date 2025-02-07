@@ -19,14 +19,13 @@ import java.util.UUID;
 //@Getter
 public class AuctionEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auction_id", nullable = false)
     private Long auctionID;
 
     @Column(name = "public_id")
-    private  UUID publicId;
+    private UUID publicId;
 
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "pig_id", referencedColumnName = "pig_id", nullable = false)
