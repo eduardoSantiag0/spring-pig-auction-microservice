@@ -3,9 +3,11 @@ package com.pig_auction_service.bid.application.services;
 import com.pig_auction_service.bid.domain.entities.Bid;
 import com.pig_auction_service.bid.infra.controllers.BidDTO;
 import com.pig_auction_service.bid.infra.gateways.BidMapper;
+import com.pig_auction_service.bid.infra.messaging.BidProducer;
 import com.pig_auction_service.bid.infra.persistance.BidEntity;
 import com.pig_auction_service.bid.infra.persistance.BidRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +19,19 @@ public class BidService {
 
     private final BidMapper bidMapper;
 
-    public BidService(BidRepository bidRepository, BidMapper bidMapper) {
+    private final BidProducer bidProducer;
+
+    public BidService(BidRepository bidRepository, BidMapper bidMapper, BidProducer bidProducer) {
         this.bidRepository = bidRepository;
         this.bidMapper = bidMapper;
+        this.bidProducer = bidProducer;
     }
 
+    @Transactional
     public void saveBid (BidEntity bidEntity) {
-        bidRepository.save(bidEntity);
+        var entity= bidRepository.save(bidEntity);
+        var domain = bidMapper.toDomain(entity);
+        bidProducer.publishBid(domain);
     }
 
     public List<BidDTO> getAllBids() {
