@@ -55,15 +55,14 @@ public class AuctionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new AuctionDTO(auctionDomain.getAuctionedPig(), auctionDomain.getHighestBid(),
-                        auctionDomain.getStartingPrice(), auctionDomain.getExpirationDate(), auctionDomain.getFinished()));
-
+                        auctionDomain.getStartingPrice(), auctionDomain.getExpirationDate(), auctionDomain.getFinished(), null));
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<AuctionDTO>> getLiveAuctions () {
 
         List<AuctionDTO> dtoList = getLiveAuctionUseCase.execute().stream().map( auction -> new AuctionDTO(auction.getAuctionedPig(), auction.getHighestBid(),
-                auction.getStartingPrice(), auction.getExpirationDate(), auction.getFinished()))
+                auction.getStartingPrice(), auction.getExpirationDate(), auction.getFinished(), auction.getHighestBidderId()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
     }

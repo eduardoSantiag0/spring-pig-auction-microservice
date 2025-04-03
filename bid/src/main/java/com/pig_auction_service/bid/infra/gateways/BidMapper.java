@@ -8,7 +8,7 @@ public class BidMapper {
 
 
     public Bid toDomain (BidEntity entity) {
-        return new Bid(entity.getAuctionId(), entity.getValue());
+        return new Bid(entity.getAuctionId(), entity.getValue(), entity.getBidderId());
     }
 
     public BidEntity toEntity (Bid domain) {

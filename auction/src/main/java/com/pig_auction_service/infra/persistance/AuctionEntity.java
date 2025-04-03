@@ -1,6 +1,7 @@
 package com.pig_auction_service.infra.persistance;
 
 import com.pig_auction_service.domain.entities.Pig;
+import com.pig_auction_service.infra.controllers.BidDTO;
 import com.pig_auction_service.infra.controllers.PigDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,9 @@ public class AuctionEntity {
     @Column(name = "highest_bid", nullable = false)
     private BigDecimal highestBid;
 
+    @Column(name = "highest_bidder_id")
+    private UUID highestBidderId;
+
     @Column(name = "starting_price", nullable = false)
     private BigDecimal startingPrice;
 
@@ -52,6 +56,7 @@ public class AuctionEntity {
         this.expirationDate = expirationDate;
         this.isFinished = false;
         this.publicId = UUID.randomUUID();
+        this.highestBidderId = null;
     }
 
     public AuctionEntity() {
@@ -84,5 +89,26 @@ public class AuctionEntity {
 
     public Boolean getFinished() {
         return isFinished;
+    }
+
+    public Long getAuctionID() {
+        return auctionID;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
+    }
+
+    public PigEntity getAuctionedPig() {
+        return auctionedPig;
+    }
+
+    public UUID getHighestBidderId() {
+        return highestBidderId;
+    }
+
+    public void setNewBid(BidDTO newBid) {
+        this.highestBid = newBid.value();
+        this.highestBidderId = newBid.bidderId();
     }
 }

@@ -6,6 +6,8 @@ import com.pig_auction_service.infra.persistance.AuctionEntity;
 import com.pig_auction_service.infra.persistance.AuctionRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AuctionRepositoryJpa implements RepositoryAuctionInterface {
@@ -30,4 +32,13 @@ public class AuctionRepositoryJpa implements RepositoryAuctionInterface {
                 .map(auctionEntityMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<AuctionEntity> findByPublicId(UUID auctionId) {
+//        return auctionRepository.findByPublicId(auctionId)
+//                .map(auctionEntityMapper::toEntity);
+        return auctionRepository.findByPublicId(auctionId);
+    }
+
+
 }

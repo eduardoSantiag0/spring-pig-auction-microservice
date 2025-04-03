@@ -44,4 +44,21 @@ public class Bid {
 
     }
 
+    public Bid(UUID auctionId, BigDecimal value, UUID bidderId) {
+
+        if (auctionId == null || value == null ) {
+            throw new IllegalArgumentException("Null parameters error.");
+        }
+
+        if (value.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Bid amount must be greater than zero.");
+        }
+        this.bidderId = bidderId;
+        this.auctionId = auctionId;
+        this.value = value;
+        this.timestamp = LocalDateTime.now();
+
+    }
+
+
 }

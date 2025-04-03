@@ -1,6 +1,5 @@
 package com.pig_auction_service.bid.application.services;
 
-import com.pig_auction_service.bid.domain.entities.Bid;
 import com.pig_auction_service.bid.infra.controllers.BidDTO;
 import com.pig_auction_service.bid.infra.gateways.BidMapper;
 import com.pig_auction_service.bid.infra.messaging.BidProducer;
@@ -28,10 +27,10 @@ public class BidService {
     }
 
     @Transactional
-    public void saveBid (BidEntity bidEntity) {
-        var entity= bidRepository.save(bidEntity);
-        var domain = bidMapper.toDomain(entity);
+    public void publishAndSaveBid(BidEntity bidEntity) {
+        var domain = bidMapper.toDomain(bidEntity);
         bidProducer.publishBid(domain);
+        bidRepository.save(bidEntity);
     }
 
     public List<BidDTO> getAllBids() {

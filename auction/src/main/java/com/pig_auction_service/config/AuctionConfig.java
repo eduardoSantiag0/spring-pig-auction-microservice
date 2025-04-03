@@ -2,6 +2,7 @@ package com.pig_auction_service.config;
 
 import com.pig_auction_service.application.gateways.RepositoryAuctionInterface;
 import com.pig_auction_service.application.usecases.GetLiveAuctionUseCase;
+import com.pig_auction_service.application.usecases.NewHighestBidUseCase;
 import com.pig_auction_service.infra.gateways.AuctionEntityMapper;
 import com.pig_auction_service.infra.gateways.AuctionRepositoryJpa;
 import com.pig_auction_service.infra.gateways.PigMapper;
@@ -31,6 +32,11 @@ public class AuctionConfig {
     @Bean
     PigMapper createPigEntityMapper () {
         return new PigMapper();
+    }
+
+    @Bean
+    NewHighestBidUseCase createNewHighestBidUseCase (AuctionRepository auctionRepository) {
+        return new NewHighestBidUseCase(auctionRepository);
     }
 
 

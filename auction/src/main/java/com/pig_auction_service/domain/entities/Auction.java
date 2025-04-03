@@ -5,6 +5,7 @@ import lombok.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Auction {
 
@@ -17,9 +18,10 @@ public class Auction {
     @NonNull
     private final LocalDate expirationDate;
 
-
     @NonNull
     private BigDecimal highestBid;
+
+    private UUID highestBidderId;
 
     private Boolean isFinished;
 
@@ -37,6 +39,7 @@ public class Auction {
         this.highestBid = startingPrice;
         this.expirationDate = expirationDate;
         this.isFinished = false;
+        this.highestBidderId = null;
     }
 
 
@@ -58,5 +61,9 @@ public class Auction {
 
     public Pig getAuctionedPig() {
         return auctionedPig;
+    }
+
+    public UUID getHighestBidderId() {
+        return highestBidderId;
     }
 }

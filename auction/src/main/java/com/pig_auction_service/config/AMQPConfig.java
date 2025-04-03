@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class AMQPConfig {
 
     private static final String exchangeName = "auction.ex";
+    private static final String queueName = "auction.queue";
+    private static final String routingKey = "routingKey.auction";
 
     //* Create exchanges and queues
     @Bean
@@ -33,8 +35,8 @@ public class AMQPConfig {
     @Bean
     public Jackson2JsonMessageConverter messageConverter(){
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // LocalDateTime
-        return  new Jackson2JsonMessageConverter(objectMapper);
+        objectMapper.registerModule(new JavaTimeModule());  //* LocalDateTime
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     //* Used to send messages to RabbitMQ
@@ -47,22 +49,20 @@ public class AMQPConfig {
         return  rabbitTemplate;
     }
 
-
-    @Bean
-    public Queue auctionQueue() {
-        return new Queue("auction.queue", true);
-    }
-
-
     @Bean
     public DirectExchange directExchange(){
         return new DirectExchange (exchangeName);
     }
 
+    @Bean
+    public Queue auctionQueue() {
+        return new Queue(queueName, true);
+    }
 
     @Bean
     public Binding binding(Queue auctionQueue, DirectExchange directExchange) {
-        return BindingBuilder.bind(auctionQueue).to(directExchange).with(exchangeName);
+//        return BindingBuilder.bind(auctionQueue).to(directExchange).with(exchangeName);
+        return BindingBuilder.bind(auctionQueue).to(directExchange).with(routingKey);
     }
 
 

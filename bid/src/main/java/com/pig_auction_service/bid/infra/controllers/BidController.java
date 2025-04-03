@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/bid")
@@ -39,7 +36,7 @@ public class BidController {
     public ResponseEntity<BidDTO> createBid (@Validated @RequestBody BidDTO bidDTO) {
         Bid bidDomain = registerBidUseCase.execute(bidDTO);
         BidEntity bidEntity = mapper.toEntity(bidDomain);
-        service.saveBid(bidEntity);
+        service.publishAndSaveBid(bidEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new BidDTO (bidEntity.getBidderId(), bidEntity.getAuctionId(), bidEntity.getValue(), bidEntity.getTimestamp()));

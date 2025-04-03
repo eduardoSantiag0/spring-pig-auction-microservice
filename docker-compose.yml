@@ -37,84 +37,84 @@ services:
         retries: 3
       restart: always
 
-    db-auction:
-      image: postgres:16-alpine
-      env_file:
-        - .env
-      environment:
-        - POSTGRES_DB=${POSTGRES_DB_AUCTION}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      ports:
-        - "5433:5432"
-      networks:
-        - auction-network
-      volumes:
-        - auction-db-data:/var/lib/postgresql/data
-      healthcheck:
-        test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_AUCTION}" ]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-
-    auction-ms:
-      build: ./auction
-      env_file:
-        - .env
-      environment:
-        - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL_AUCTION}
-        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-        - EUREKA_SERVER=${EUREKA_SERVER}
-      ports:
-        - "8083:8083"
-      networks:
-        - auction-network
-      depends_on:
-        db-auction:
-          condition: service_healthy
-        rabbitmq:
-          condition: service_healthy
-          
-          
-    db-bid:
-      image: postgres:16-alpine
-      env_file:
-        - .env
-      environment:
-        - POSTGRES_DB=${POSTGRES_DB_BID}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      ports:
-        - "5435:5432"
-      networks:
-        - auction-network
-      volumes:
-        - bid-db-data:/var/lib/postgresql/data
-      healthcheck:
-        test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_BID}" ]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-
-    bid-ms: 
-        build: ./bid
-        env_file:
-          - .env
-        environment:
-          - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL_BID}
-          - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-          - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-          - EUREKA_SERVER=${EUREKA_SERVER}
-        ports:
-          - "8084:8084"
-        networks:
-          - auction-network
-        depends_on:
-          db-bid:
-            condition: service_healthy
-          rabbitmq:
-            condition: service_healthy
+#    db-auction:
+#      image: postgres:16-alpine
+#      env_file:
+#        - .env
+#      environment:
+#        - POSTGRES_DB=${POSTGRES_DB_AUCTION}
+#        - POSTGRES_USER=${POSTGRES_USER}
+#        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#      ports:
+#        - "5433:5432"
+#      networks:
+#        - auction-network
+#      volumes:
+#        - auction-db-data:/var/lib/postgresql/data
+#      healthcheck:
+#        test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_AUCTION}" ]
+#        interval: 10s
+#        timeout: 5s
+#        retries: 5
+#
+#
+#    db-bid:
+#      image: postgres:16-alpine
+#      env_file:
+#        - .env
+#      environment:
+#        - POSTGRES_DB=${POSTGRES_DB_BID}
+#        - POSTGRES_USER=${POSTGRES_USER}
+#        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#      ports:
+#        - "5435:5432"
+#      networks:
+#        - auction-network
+#      volumes:
+#        - bid-db-data:/var/lib/postgresql/data
+#      healthcheck:
+#        test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_BID}" ]
+#        interval: 10s
+#        timeout: 5s
+#        retries: 5
+#
+#    auction-ms:
+#      build: ./auction
+#      env_file:
+#        - .env
+#      environment:
+#        - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL_AUCTION}
+#        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+#        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+#        - EUREKA_SERVER=${EUREKA_SERVER}
+#      ports:
+#        - "8083:8083"
+#      networks:
+#        - auction-network
+#      depends_on:
+#        db-auction:
+#          condition: service_healthy
+#        rabbitmq:
+#          condition: service_healthy
+#
+#    bid-ms:
+#        build: ./bid
+#        env_file:
+#          - .env
+#        environment:
+#          - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL_BID}
+#          - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+#          - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+#          - EUREKA_SERVER=${EUREKA_SERVER}
+#        ports:
+#          - "8084:8084"
+#        networks:
+#          - auction-network
+#        depends_on:
+#          db-bid:
+#            condition: service_healthy
+#          rabbitmq:
+#            condition: service_healthy
 
 networks:
   auction-network:
