@@ -1,34 +1,85 @@
-# **AuctionPigs Application**
+# 🐷📈 **AuctionPigs Application**
 
-AuctionPigs é um sistema de leilão de porcos desenvolvido com a **Arquitetura Clean** e projetado para microsserviços. A aplicação utiliza **RabbitMQ** para comunicação entre serviços, **PostgreSQL** para persistência de dados, e é containerizada com **Docker** para facilitar o deployment. A lógica de domínio segue padrões bem estabelecidos, garantindo escalabilidade, testabilidade e fácil manutenção.
+**AuctionPigs** is a pig auction system built using **Clean Architecture** and designed with a **microservices** approach. The application uses **🐇 RabbitMQ** for inter-service communication, **🐘 PostgreSQL** for data persistence, and is containerized with **🐳 Docker** to streamline deployment.
 
-## **Funcionalidades**
+---
 
-### **1. Leilões**
+## 🚀 **Features**
 
-- Registro de novos leilões com informações do porco leiloado.
-- Gerenciamento do status do leilão (aberto, finalizado).
-- Expiração automática de leilões após a data definida.
+### 🐖 1. **Auctions**
 
-### **2. Lances**
+- Create new auctions with pig details.
+- Automatically expire auctions after the scheduled end date. ⏳
 
-- Registro de lances durante o leilão (apenas na memória até o término do leilão).
-- Validação de regras de negócio, como valor mínimo do lance e vinculação ao leilão.
-- Persistência do maior lance ao término do leilão.
+### 💰 2. **Bids**
 
-### **3. Comunicação Entre Microsserviços**
+- Place bids during active auctions.
+- Validates business rules such as minimum bid amount and auction linkage.
+- Saves the highest bid when the auction ends. 🏆
 
-- Notificações de eventos importantes, como término do leilão e novo lance, via RabbitMQ.
+### 🔁 3. **Microservice Communication**
 
-### **4. API REST**
+- Important event notifications (e.g., auction ended, new bid placed) sent via RabbitMQ. 📬
 
-- Endpoints para gerenciar leilões e lances.
+### 🌐 4. **REST API**
 
-## **Estrutura do Projeto**
+- Endpoints for managing auctions and bids using HTTP methods. 🔧
 
-### **Camadas da Arquitetura Clean**
+---
 
-1. **Domain**: Contém entidades (`Auction`, `Pig`, `Bid`) e regras de negócio.
-2. **Application**: Casos de uso, como `RegisterAuctionUseCase`  `RegisterBidUseCase` e `FinishAuctionUseCase`.
-3. **Interface Adapters**: Controladores REST e adaptadores de mensageria.
-4. **Frameworks & Drivers**: Repositórios, gateways para RabbitMQ e PostgreSQL.
+## 🧱 **Project Structure**
+
+### 🧭 **Clean Architecture Layers**
+
+1. **Domain**
+    - Contains core entities: `Auction`, `Pig`, `Bid`
+    - Business rules live here 📐
+
+2. **Application**
+    - Use cases like `RegisterAuctionUseCase`, `RegisterBidUseCase`, and `FinishAuctionUseCase` 🚦
+
+3. **Interface Adapters**
+    - REST controllers and messaging adapters 🔌
+
+4. **Frameworks & Drivers**
+    - Repositories, RabbitMQ and PostgreSQL gateways 🛤️
+
+                   +----------------------------+
+                   |     🚪 External Interfaces   |
+                   |  (REST Controllers, MQ Adapters)  |
+                   +----------------------------+
+                              |
+                              v
+                   +----------------------------+
+                   |  🔄 Interface Adapters       |
+                   |  (HTTP, RabbitMQ, DTOs)      |
+                   +----------------------------+
+                              |
+                              v
+                   +----------------------------+
+                   |   ⚙️ Application Layer        |
+                   |  Use Cases:                 |
+                   |  - RegisterAuction          |
+                   |  - RegisterBid              |
+                   |  - FinishAuction            |
+                   +----------------------------+
+                              |
+                              v
+                   +----------------------------+
+                   |   🧠 Domain Layer             |
+                   |  Entities:                  |
+                   |  - Auction                  |
+                   |  - Pig                      |
+                   |  - Bid                      |
+                   |  Business Rules             |
+                   +----------------------------+
+                              ^
+                              |
+                   +----------------------------+
+                   |   🧰 Frameworks & Drivers     |
+                   |  - PostgreSQL Repository     |
+                   |  - RabbitMQ Gateway          |
+                   |  - Docker                    |
+                   +----------------------------+
+
+---

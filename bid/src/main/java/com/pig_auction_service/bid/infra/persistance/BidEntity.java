@@ -1,6 +1,7 @@
 package com.pig_auction_service.bid.infra.persistance;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -30,16 +31,20 @@ public class BidEntity {
     private BigDecimal value;
 
     @Column(name = "timestamp", nullable = false)
-//    @DateTimeFormat(pattern = "yyyy--MM--dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
-    public BidEntity( UUID bidderId, UUID auctionId, LocalDateTime timestamp, BigDecimal value) {
+    @Column(name = "success", nullable = false)
+    @ColumnDefault("false")
+    private boolean success;
+
+    public BidEntity( UUID bidderId, UUID auctionId, LocalDateTime timestamp, BigDecimal value, boolean success) {
         this.publicId = UUID.randomUUID();
         this.bidderId = bidderId;
         this.auctionId = auctionId;
         this.timestamp = timestamp;
         this.value = value;
+        this.success = success;
     }
 
     public BidEntity() {
@@ -67,5 +72,13 @@ public class BidEntity {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }

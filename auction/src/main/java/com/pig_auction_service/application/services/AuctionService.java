@@ -18,4 +18,6 @@ public class AuctionService {
     public void saveAuction (AuctionEntity auctionEntity) {
         repository.save(auctionEntity);
     }
+
+
 }

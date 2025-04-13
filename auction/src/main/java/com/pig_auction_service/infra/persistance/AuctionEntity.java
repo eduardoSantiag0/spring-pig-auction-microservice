@@ -111,4 +111,9 @@ public class AuctionEntity {
         this.highestBid = newBid.value();
         this.highestBidderId = newBid.bidderId();
     }
+
+    public void markAsExpired() {
+        this.isFinished = true;
+    }
+
 }

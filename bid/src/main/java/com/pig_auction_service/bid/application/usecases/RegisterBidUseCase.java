@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegisterBidUseCase {
     public Bid execute (BidDTO dto) {
-        return new Bid(dto.auctionId(), dto.value());
+        return new Bid(dto.auctionId(), dto.value(), dto.publicId());
     }
 }

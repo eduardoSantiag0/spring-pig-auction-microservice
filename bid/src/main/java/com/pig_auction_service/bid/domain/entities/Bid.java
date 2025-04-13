@@ -27,8 +27,13 @@ public class Bid {
     @NonNull
     private final LocalDateTime timestamp;
 
+    @NonNull
+    private final UUID publicId;
 
-    public Bid(UUID auctionId, BigDecimal value) {
+    private final boolean success;
+
+
+    public Bid(UUID auctionId, BigDecimal value, UUID publicId) {
 
         if (auctionId == null || value == null ) {
             throw new IllegalArgumentException("Null parameters error.");
@@ -41,10 +46,12 @@ public class Bid {
         this.auctionId = auctionId;
         this.value = value;
         this.timestamp = LocalDateTime.now();
+        this.publicId = publicId;
+        this.success = false;
 
     }
 
-    public Bid(UUID auctionId, BigDecimal value, UUID bidderId) {
+    public Bid(UUID auctionId, BigDecimal value, UUID bidderId, UUID publicId , boolean success) {
 
         if (auctionId == null || value == null ) {
             throw new IllegalArgumentException("Null parameters error.");
@@ -57,6 +64,8 @@ public class Bid {
         this.auctionId = auctionId;
         this.value = value;
         this.timestamp = LocalDateTime.now();
+        this.publicId = publicId;
+        this.success = success;
 
     }
 

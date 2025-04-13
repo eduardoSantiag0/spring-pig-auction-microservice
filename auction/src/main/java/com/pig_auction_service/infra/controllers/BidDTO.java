@@ -8,7 +8,8 @@ public record BidDTO(
         UUID bidderId,
         UUID auctionId,
         BigDecimal value,
-        LocalDateTime timestamp
+        LocalDateTime timestamp,
+        UUID publicId,
+        boolean success
 ) {
 }
-

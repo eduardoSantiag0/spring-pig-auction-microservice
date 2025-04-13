@@ -6,6 +6,7 @@ import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -46,8 +47,25 @@ public class AMQPConfig {
                                          Jackson2JsonMessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
+
+        //? NOVO
+        rabbitTemplate.setReplyAddress("auction.bid.status.queue");
+        rabbitTemplate.setReplyTimeout(10000);
+
         return  rabbitTemplate;
     }
+
+//    @Bean
+//    public SimpleMessageListenerContainer replyContainer(ConnectionFactory connectionFactory,
+//                                                         Jackson2JsonMessageConverter messageConverter,
+//                                                         RabbitTemplate rabbitTemplate) {
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//        container.setQueueNames(queueBidStatus);
+//        container.setMessageListener(rabbitTemplate);
+//        container.setMessageListener(messageConverter);
+//        return container;
+//    }
 
     @Bean
     public DirectExchange directExchange(){
@@ -61,9 +79,33 @@ public class AMQPConfig {
 
     @Bean
     public Binding binding(Queue auctionQueue, DirectExchange directExchange) {
-//        return BindingBuilder.bind(auctionQueue).to(directExchange).with(exchangeName);
         return BindingBuilder.bind(auctionQueue).to(directExchange).with(routingKey);
     }
 
+
+    @Value("${bidstatus.exchange}")
+    private String exchangeBidStatus;
+
+    @Value("${bidstatus.queue}")
+    private String queueBidStatus;
+
+    @Value("${bidstatus.routingKey}")
+    private String routingKeyBidStatus;
+
+
+    @Bean
+    public DirectExchange directExchangeeBidStatus() {
+        return new DirectExchange(exchangeBidStatus);
+    }
+
+    @Bean
+    public Queue bidStatusQueue() {
+        return new Queue(queueBidStatus, true);
+    }
+
+    @Bean
+    public Binding bindingBidStatus(Queue bidStatusQueue, DirectExchange directExchangeeBidStatus) {
+        return BindingBuilder.bind(bidStatusQueue).to(directExchangeeBidStatus).with(routingKeyBidStatus);
+    }
 
 }

@@ -30,9 +30,9 @@ public class Auction {
             throw new IllegalArgumentException("Starting price needs to be greater than zero.");
         }
 
-        if (expirationDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Expiration date must be in the future..");
-        }
+//        if (expirationDate.isBefore(LocalDate.now())) {
+//            throw new IllegalArgumentException("Expiration date must be in the future..");
+//        }
 
         this.auctionedPig = auctionedPig;
         this.startingPrice = startingPrice;

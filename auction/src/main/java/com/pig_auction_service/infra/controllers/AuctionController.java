@@ -25,7 +25,6 @@ public class AuctionController {
     private final CreateAuctionUseCase createAuctionUseCase;
     private final GetLiveAuctionUseCase getLiveAuctionUseCase;
 
-
     @Autowired
     private final AuctionEntityMapper mapper;
 
@@ -59,9 +58,12 @@ public class AuctionController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<AuctionDTO>> getLiveAuctions () {
+    public ResponseEntity<List<AuctionDTO>> getLiveAuctions (@RequestParam(defaultValue = "0") Integer pageNo,
+                                                             @RequestParam(defaultValue = "10") Integer pageSize) {
 
-        List<AuctionDTO> dtoList = getLiveAuctionUseCase.execute().stream().map( auction -> new AuctionDTO(auction.getAuctionedPig(), auction.getHighestBid(),
+        List<AuctionDTO> dtoList = getLiveAuctionUseCase.executePaging(pageNo, pageSize).stream()
+                .map(mapper::toDomain)
+                .map( auction -> new AuctionDTO(auction.getAuctionedPig(), auction.getHighestBid(),
                 auction.getStartingPrice(), auction.getExpirationDate(), auction.getFinished(), auction.getHighestBidderId()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);

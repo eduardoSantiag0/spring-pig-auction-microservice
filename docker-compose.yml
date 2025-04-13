@@ -77,12 +77,13 @@ services:
 #        interval: 10s
 #        timeout: 5s
 #        retries: 5
-#
+
 #    auction-ms:
 #      build: ./auction
 #      env_file:
 #        - .env
 #      environment:
+#        - SPRING_PROFILES_ACTIVE=production
 #        - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL_AUCTION}
 #        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
 #        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
@@ -102,6 +103,7 @@ services:
 #        env_file:
 #          - .env
 #        environment:
+#          - SPRING_PROFILES_ACTIVE=production
 #          - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL_BID}
 #          - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
 #          - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
