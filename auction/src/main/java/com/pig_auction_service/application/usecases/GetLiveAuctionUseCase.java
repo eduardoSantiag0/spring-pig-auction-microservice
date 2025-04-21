@@ -24,7 +24,7 @@ public class GetLiveAuctionUseCase {
     }
 
     public List<AuctionEntity> executePaging(Integer pageNo, Integer pageSize) {
-        return repositoryAuctionInterface.findByIsFinishedTrueOrderByExpirationDateAsc(PageRequest.of(pageNo, pageSize));
+        return repositoryAuctionInterface.findByIsFinishedFalseOrderByExpirationDateAsc(PageRequest.of(pageNo, pageSize));
     }
 
 //    public List<Auction> executeDDTO() {

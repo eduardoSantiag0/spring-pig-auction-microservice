@@ -25,7 +25,7 @@ public class AuctionEntity {
     @Column(name = "auction_id", nullable = false)
     private Long auctionID;
 
-    @Column(name = "public_id")
+    @Column(name = "public_id", nullable = false)
     private UUID publicId;
 
     @OneToOne (cascade = CascadeType.ALL)
@@ -115,5 +115,7 @@ public class AuctionEntity {
     public void markAsExpired() {
         this.isFinished = true;
     }
+
+
 
 }

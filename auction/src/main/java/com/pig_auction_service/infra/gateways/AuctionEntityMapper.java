@@ -2,6 +2,7 @@ package com.pig_auction_service.infra.gateways;
 
 import com.pig_auction_service.domain.entities.Auction;
 import com.pig_auction_service.domain.entities.Pig;
+import com.pig_auction_service.infra.controllers.AuctionDTO;
 import com.pig_auction_service.infra.persistance.AuctionEntity;
 import com.pig_auction_service.infra.persistance.PigEntity;
 
@@ -28,5 +29,11 @@ public class AuctionEntityMapper {
         Pig pigDomain = pigMapper.toDomain(auctionEntity.getAuctionePig(), null);
 
         return new Auction( pigDomain, auctionEntity.getHighestBid(), auctionEntity.getExpirationDate());
+    }
+
+    public AuctionDTO fromEntityToDTO (AuctionEntity entity) {
+        Pig pigDomain = pigMapper.toDomain(entity.getAuctionePig(), null);
+
+        return new AuctionDTO(entity.getPublicId(), pigDomain, entity.getHighestBid(), entity.getStartingPrice(), entity.getExpirationDate(), entity.getFinished(), entity.getHighestBidderId());
     }
 }

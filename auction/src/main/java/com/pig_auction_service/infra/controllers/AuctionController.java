@@ -53,7 +53,7 @@ public class AuctionController {
         service.saveAuction(auctionEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new AuctionDTO(auctionDomain.getAuctionedPig(), auctionDomain.getHighestBid(),
+                new AuctionDTO(auctionEntity.getPublicId(),auctionDomain.getAuctionedPig(), auctionDomain.getHighestBid(),
                         auctionDomain.getStartingPrice(), auctionDomain.getExpirationDate(), auctionDomain.getFinished(), null));
     }
 
@@ -62,9 +62,7 @@ public class AuctionController {
                                                              @RequestParam(defaultValue = "10") Integer pageSize) {
 
         List<AuctionDTO> dtoList = getLiveAuctionUseCase.executePaging(pageNo, pageSize).stream()
-                .map(mapper::toDomain)
-                .map( auction -> new AuctionDTO(auction.getAuctionedPig(), auction.getHighestBid(),
-                auction.getStartingPrice(), auction.getExpirationDate(), auction.getFinished(), auction.getHighestBidderId()))
+                .map(mapper::fromEntityToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
     }
